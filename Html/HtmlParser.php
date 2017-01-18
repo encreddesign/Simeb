@@ -12,36 +12,15 @@
 
     protected $input;
     protected $segments = [];
-    protected $segment_count = 4;
 
     public function __construct ($input) {
 
       $this->input = $input;
+      $this->segments = Segmenter::segment($this->input);
 
-      $lines = explode( PHP_EOL, $input );
+      if( empty($this->segments) ) {
 
-      $current_idx = 0;
-      $current_point = 0;
-      $split_points = ceil( count($lines) / $this->segment_count );
-
-      if( !empty($lines) ) {
-
-        foreach($lines as $idx => $line) {
-
-          if( $current_point <= $split_points ) {
-
-            if( strlen($line) > 0 ) $this->segments[ $current_idx ][] = trim($line);
-
-          } else {
-
-            $current_idx++;
-            $current_point = 0;
-
-          }
-
-          $current_point++;
-
-        }
+        throw new Exception('Problem segmenting current site.');
 
       }
 
@@ -50,9 +29,30 @@
     /*
     * Function: get_links
     */
-    public function get_links () {
+    public function get_links ( $needed = null ) {
 
-      return [];
+      $return = [];
+
+      $linker = new Link( $this->segments );
+      $linker_tags = $linker->get_tags();
+
+      if( !empty($linker_tags) ) {
+
+        if( !is_null($needed) ) {
+
+          foreach($linker_tags as $block) {
+            if( isset($block[$needed]) ) $return[] = $block;
+          }
+
+        } else {
+
+          $return = $linker_tags;
+
+        }
+
+      }
+
+      return $return;
 
     }
 
