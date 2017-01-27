@@ -1,16 +1,16 @@
 <?php
 
-  require_once( __DIR__.'/Cacher.php' );
-  require_once( __DIR__.'/Html/HtmlParser.php' );
+  require_once( __DIR__.'/autoloader.php' );
+  Autoloader::init()->register();
 
   // Index template for testing
 
-  $ajax = Cacher::forge( 'http://www.youngs.co.uk/' )->get_cache();
+  $ajax = Simeb\Cacher::forge( 'http://www.youngs.co.uk/' )->get_cache();
   if( $ajax ) {
 
     try {
 
-      $html_parser = new HtmlParser($ajax);
+      $html_parser = new Simeb\Html\HtmlParser($ajax);
 
       $links = $html_parser->get_links();
 

@@ -1,11 +1,6 @@
 <?php
 
-  // Includes
-  require_once( __DIR__.'/Link.php' );
-  require_once( __DIR__.'/Image.php' );
-  require_once( __DIR__.'/Header.php' );
-  require_once( __DIR__.'/Paragraph.php' );
-  require_once( __DIR__.'/Segmenter.php' );
+  namespace Simeb\Html;
 
   // Class: HtmlParser
   class HtmlParser {
@@ -16,7 +11,7 @@
     public function __construct ($input) {
 
       $this->input = $input;
-      $this->segments = Segmenter::segment($this->input);
+      $this->segments = \Simeb\Html\Segmenter::segment($this->input);
 
       if( empty($this->segments) ) {
 
@@ -33,7 +28,7 @@
 
       $return = [];
 
-      $linker = new Link( $this->segments );
+      $linker = new \Simeb\Html\Link( $this->segments );
       $linker_tags = $linker->get_tags();
 
       if( !empty($linker_tags) ) {

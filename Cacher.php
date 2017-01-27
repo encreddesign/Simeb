@@ -1,5 +1,7 @@
 <?php
 
+  namespace Simeb;
+
   // Class: Cacher
   class Cacher {
 

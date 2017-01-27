@@ -1,5 +1,7 @@
 <?php
 
+  namespace Simeb\Html;
+
   // Class: Link
   class Link {
 
