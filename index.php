@@ -3,9 +3,13 @@
   require_once( __DIR__.'/autoloader.php' );
   Autoloader::init()->register();
 
+  $simeb = new Simeb\SimebCore( 'http://www.youngs.co.uk/' );
+
+  @header('Content-Type: application/json');
+
   // Index template for testing
 
-  $ajax = Simeb\Cacher::forge( 'http://www.youngs.co.uk/' )->get_cache();
+  $ajax = Simeb\Cacher::forge( $simeb->get_url() )->get_cache();
   if( $ajax ) {
 
     try {
@@ -14,11 +18,12 @@
 
       $links = $html_parser->get_links();
 
-      echo json_encode([
-
-        'links' => ( !empty($links) ? $links : null )
-
-      ]);
+      // echo json_encode([
+      //
+      //   'links' => ( !empty($links) ? $links : null )
+      //
+      // ]);
+      Simeb\Html\Navigator::forge()->set_core($simeb)->set_links($links)->get_nav();
 
     } catch (Exception $ex) {
 
@@ -32,7 +37,5 @@
     }
 
   }
-
-  @header('Content-Type: application/json');
 
 ?>
